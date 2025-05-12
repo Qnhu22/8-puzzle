@@ -20,8 +20,41 @@ Các thành phần chính của bài toán tìm kiếm và giải pháp
 - Chi phí:
     Mỗi bước di chuyển có chi phí bằng 1
 - Giải pháp:
-    Từ trạng thia sban đầu, tìm ra trạng thái mục tiêu từ các thuật toán tìm kiếm không có thông tin như BFS, DFS, UCS, IDS
+    Từ trạng thái ban đầu, tìm ra trạng thái mục tiêu từ các thuật toán tìm kiếm không có thông tin như BFS, DFS, UCS, IDS
+
   Hình ảnh gif từng thuật toán cùng biểu đồ so sánh
- 
-  
+
+      BFS
+
+  ![](Gif/BFS.gif)
+
+      DFS
+
+  ![](Gif/DFS.gif)
+
+      UCS
+
+  ![](Gif/UCS.gif)
+
+      IDS
+
+  ![](Gif/IDS.gif)
+
+So sánh các thuật toán:
+
+![Nhóm 1](Image/Nhom1.png)
+
+Đánh giá các thuật toán:
+
+Breadth-First Search (BFS): Thuật toán duyệt theo từng lớp trạng thái nên có khả năng tìm được lời giải ngắn nhất. Tuy nhiên, vì phải lưu trữ toàn bộ các trạng thái trong hàng đợi ở mỗi mức, BFS rất tốn bộ nhớ nếu không gian trạng thái lớn.
+
+Depth-First Search (DFS): Ưu điểm lớn nhất của DFS là mức sử dụng bộ nhớ thấp, do chỉ cần theo dõi trạng thái trên đường đi hiện tại. Dẫu vậy, do đi sâu trước nên DFS có thể đi lệch hướng và bị mắc kẹt, đặc biệt nếu lời giải nằm gần gốc.
+    
+Uniform-Cost Search (UCS): Giống như BFS nhưng xét đến chi phí giữa các trạng thái. UCS luôn tìm được đường đi tối ưu nếu chi phí khác nhau. Tuy nhiên, trong 8-Puzzle, chi phí các bước di chuyển giống nhau nên UCS hoạt động gần như BFS.
+    
+Iterative Deepening Search (IDS): Là sự kết hợp giữa DFS và BFS, IDS mở rộng tìm kiếm theo từng mức sâu, giúp tiết kiệm bộ nhớ như DFS nhưng vẫn đảm bảo tìm được lời giải như BFS. Đây là lựa chọn phù hợp cho các bài toán có độ sâu lời giải không lớn, như 8-Puzzle.
+
+Tổng kết
+    
+Trong bối cảnh của bài toán 8-Puzzle, IDS là thuật toán nổi bật nhất nhờ sự cân bằng giữa độ hiệu quả và mức tiêu thụ bộ nhớ. DFS lại thường kém hiệu quả hơn, dễ bị lạc hướng nếu không có kiểm soát độ sâu phù hợp.
     
