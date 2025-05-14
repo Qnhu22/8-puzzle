@@ -26,23 +26,23 @@ Các thành phần chính của bài toán tìm kiếm và giải pháp
 
       BFS
 
-  ![](Gif/BFS.gif)
+
 
       DFS
 
-  ![](Gif/DFS.gif)
+
 
       UCS
 
-  ![](Gif/UCS.gif)
+
 
       IDS
 
-  ![](Gif/IDS.gif)
+
 
 So sánh các thuật toán:
 
-![Nhóm 1](Image/Nhom1.png)
+
 
 Đánh giá các thuật toán:
 
