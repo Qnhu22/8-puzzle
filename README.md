@@ -54,7 +54,7 @@ Ngoài ra, dự án còn hướng đến mục tiêu giảng dạy và nghiên c
     
 - Iterative Deepening Search (IDS): IDS là sự kết hợp hiệu quả giữa BFS và DFS: nó thực hiện nhiều lần tìm kiếm theo chiều sâu với giới hạn độ sâu tăng dần. Mặc dù mỗi lần lặp lại sẽ tái duyệt lại các node đã duyệt ở độ sâu trước đó, nhưng chi phí bộ nhớ cực thấp là một lợi thế lớn.
 
-## 2.1 Nhóm thuật toán tìm kiếm có thông tin (Informed Search Algorithms)
+## 2.2 Nhóm thuật toán tìm kiếm có thông tin (Informed Search Algorithms)
 ### Các thành phần chính của bài toán tìm kiếm:
 - Trạng thái ban đầu:
     Lưới 3x3 chứa 8 số từ 1 đến 8 và một ô trống (ô 0). Trong đó, trạng thái ban đầu là ([[1 2 3], [0 4 6], [7 5 8]]).
@@ -245,7 +245,6 @@ Nhờ vào cơ chế thu hẹp không gian tìm kiếm từ sớm, số trạng 
 Quá trình này được lặp lại nhiều lần, có thể kết hợp với Simulated Annealing để chấp nhận tạm thời các bước xấu, giúp tránh rơi vào cực trị địa phương. Min-Conflicts không duyệt theo cây trạng thái mà điều chỉnh trực tiếp trên lời giải hiện tại. Nhờ vậy, số lần cập nhật trạng thái thấp, nhưng mỗi lần cần tính toán toàn cục số xung đột, dẫn đến chi phí xử lý cao hơn. Thuật toán đặc biệt phù hợp với bài toán có ràng buộc mềm, hoặc yêu cầu tìm nghiệm nhanh trong không gian lớn.
 
 ## 2.6 Nhóm thuật toán học tăng cường (Reinforcement Learning)
-
 ### Các thành phần chính của bài toán tìm kiếm:
 - Trạng thái ban đầu:
     Lưới 3x3 bao gồm 8 số nguyên từ 1 đến 8 và một ô trống được biểu diễn bằng số 0, thể hiện cấu hình ban đầu của bài toán. Ví dụ: [[1, 0, 2], [4, 6, 3], [7, 5, 8]].
@@ -285,6 +284,7 @@ Q-Learning sử dụng bảng Q (Q-table) để lưu giá trị kỳ vọng củ
 # 3. Kết luận
 - Dự án đã triển khai thành công một bộ giải 8-puzzle sử dụng nhiều thuật toán tìm kiếm khác nhau, bao gồm BFS, DFS, UCS, IDS, Greedy, A*, IDA*, cùng với các phương pháp tối ưu hóa như Hill Climbing, Simulated Annealing, Beam Search, Genetic Algorithm, AND-OR Search, Belief State Search, Partial Observable Search, Backtracking, Forward Checking, Min-Conflicts, và Q-Learning 
 - Giao diện Pygame tích hợp cho phép người dùng tùy chỉnh trạng thái ban đầu và trực quan hóa quá trình giải, tăng tính tương tác và hiệu quả học tập
+- Phát triển chế độ học thuật (Learning Mode): Thêm tooltip giải thích ngắn gọn cho từng thuật toán khi rê chuột qua. Có file lưu lại các thông tin tìm đường đi của thuật toán
 - Nhóm 1: BFS, DFS, UCS, IDS
   - BFS: Tìm lời giải ngắn nhất theo số bước nhưng ngốn bộ nhớ lớn
   - DFS: Bộ nhớ ít, dễ rơi vào vòng lặp hoặc nhánh sai nếu không cắt tỉa
