@@ -206,9 +206,9 @@ Ngoài ra, dự án còn hướng đến mục tiêu giảng dạy và nghiên c
       - Ràng buộc thứ tự cột dọc: tương tự, nếu tồn tại ô phía dưới (i+1, j), thì grid[i+1][j] = grid[i][j] + 3
       - Ràng buộc về khả năng giải được: cấu hình chỉ hợp lệ nếu tổng số cặp nghịch đảo (inversions) là số chẵn, đảm bảo puzzle có lời giải.
 - Hành động:
-    Backtracking Search: Duyệt từng ô theo thứ tự, gán giá trị nếu hợp lệ. Quay lui nếu không còn giá trị hợp lệ trong domain.
-    Forward Checking: Tương tự Backtracking, nhưng sau mỗi lần gán sẽ cập nhật domain của các ô còn lại bằng cách loại bỏ các giá trị không còn khả thi. Giúp phát hiện xung đột sớm và tránh rơi vào nhánh sai
-    Min-Conflicts Search: Khởi đầu với trạng thái đầy đủ, nhưng có thể không hợp lệ (các giá trị được gán ngẫu nhiên). Tìm ô đang gây xung đột ràng buộc, gán lại giá trị sao cho số xung đột giảm nhiều nhất. Lặp lại quá trình sửa lỗi cho đến khi đạt trạng thái thỏa mãn hoặc vượt giới hạn lặp
+    - Backtracking Search: Duyệt từng ô theo thứ tự, gán giá trị nếu hợp lệ. Quay lui nếu không còn giá trị hợp lệ trong domain.
+    - Forward Checking: Tương tự Backtracking, nhưng sau mỗi lần gán sẽ cập nhật domain của các ô còn lại bằng cách loại bỏ các giá trị không còn khả thi. Giúp phát hiện xung đột sớm và tránh rơi vào nhánh sai
+    - Min-Conflicts Search: Khởi đầu với trạng thái đầy đủ, nhưng có thể không hợp lệ (các giá trị được gán ngẫu nhiên). Tìm ô đang gây xung đột ràng buộc, gán lại giá trị sao cho số xung đột giảm nhiều nhất. Lặp lại quá trình sửa lỗi cho đến khi đạt trạng thái thỏa mãn hoặc vượt giới hạn lặp
 - Chi phí:
     Chỉ tập trung vào tìm kiếm trạng thái cuối cùng hợp lệ. Mỗi hành động gán hợp lệ đều có trọng số bằng nhau, nên chi phí không được sử dụng để hướng dẫn tìm kiếm như trong các bài toán tối ưu
 ### Giải pháp:
@@ -240,8 +240,10 @@ Ngoài ra, dự án còn hướng đến mục tiêu giảng dạy và nghiên c
 - Forward Checking Search: Bắt đầu từ trạng thái rỗng và sử dụng Forward Checking để loại bỏ trước các giá trị không hợp lệ khỏi miền (domain) của các biến chưa gán, sau mỗi lần gán giá trị. Thuật toán kết hợp hai chiến lược chọn biến và giá trị:
     - MRV (Minimum Remaining Values): ưu tiên gán cho ô có ít lựa chọn hợp lệ nhất.
     - LCV (Least Constraining Value): chọn giá trị ít làm giảm khả năng gán hợp lệ cho các ô còn lại.
+
 Nhờ vào cơ chế thu hẹp không gian tìm kiếm từ sớm, số trạng thái được mở thấp hơn so với Backtracking. Đây là chiến lược có tính định hướng, giúp tăng hiệu quả khi số ràng buộc nhiều hoặc cấu trúc lời giải chặt chẽ
 - Min-Conflicts Search: Thuật toán tìm kiếm cục bộ (local search) bắt đầu từ một trạng thái đầy đủ, tức là mọi ô đã được gán giá trị từ 0 đến 8 một cách ngẫu nhiên. Sau đó, thuật toán đánh giá mức độ xung đột (vi phạm ràng buộc) và chọn biến gây xung đột để gán lại giá trị sao cho giảm xung đột tổng thể.
+
 Quá trình này được lặp lại nhiều lần, có thể kết hợp với Simulated Annealing để chấp nhận tạm thời các bước xấu, giúp tránh rơi vào cực trị địa phương. Min-Conflicts không duyệt theo cây trạng thái mà điều chỉnh trực tiếp trên lời giải hiện tại. Nhờ vậy, số lần cập nhật trạng thái thấp, nhưng mỗi lần cần tính toán toàn cục số xung đột, dẫn đến chi phí xử lý cao hơn. Thuật toán đặc biệt phù hợp với bài toán có ràng buộc mềm, hoặc yêu cầu tìm nghiệm nhanh trong không gian lớn.
 
 ## 2.6 Nhóm thuật toán học tăng cường (Reinforcement Learning)
@@ -253,9 +255,7 @@ Quá trình này được lặp lại nhiều lần, có thể kết hợp với
 - Không gian trạng thái:
     Tập hợp tất cả các cách sắp xếp cụ thể vị trí các ô của lưới 3x3. Q-Learning không xây dựng toàn bộ không gian này trước mà dần dần khám phá nó thông qua tương tác, cập nhật chính sách dựa trên trải nghiệm
 - Hành động:
-    Backtracking Search: Duyệt từng ô theo thứ tự, gán giá trị nếu hợp lệ. Quay lui nếu không còn giá trị hợp lệ trong domain.
-    Forward Checking: Tương tự Backtracking, nhưng sau mỗi lần gán sẽ cập nhật domain của các ô còn lại bằng cách loại bỏ các giá trị không còn khả thi. Giúp phát hiện xung đột sớm và tránh rơi vào nhánh sai
-    Min-Conflicts Search: Khởi đầu với trạng thái đầy đủ, nhưng có thể không hợp lệ (các giá trị được gán ngẫu nhiên). Tìm ô đang gây xung đột ràng buộc, gán lại giá trị sao cho số xung đột giảm nhiều nhất. Lặp lại quá trình sửa lỗi cho đến khi đạt trạng thái thỏa mãn hoặc vượt giới hạn lặp
+    Ô trống di chuyển lên, xuống, trái, phải để hoán đổi với ô liền kề dựa trên một thuật toán để tìm trạng thái đích
 - Chi phí:
     Thay vì tính chi phí theo số bước hoặc khoảng cách, thuật toán Q-Learning sử dụng phần thưởng (reward) để hướng dẫn agent:
     - Mỗi hành động di chuyển thông thường bị phạt bằng một phần thưởng âm nhỏ (ví dụ: -1), để khuyến khích agent tìm đường đi ngắn.
