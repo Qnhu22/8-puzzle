@@ -26,23 +26,23 @@ Ngoài ra, dự án còn hướng đến mục tiêu giảng dạy và nghiên c
 
 ### BFS
 
-![Image](https://github.com/user-attachments/assets/c977aac3-109a-4d72-b129-1c04474b2230)
+![Image](https://github.com/user-attachments/assets/f8fd23df-8c80-42f0-b7d9-2f113be2cd4d)
 
 ### DFS
 
-![Image](https://github.com/user-attachments/assets/d3dba098-2550-4890-9715-bbff6c681bfa)
+![Image](https://github.com/user-attachments/assets/80b36ada-d2bb-42a9-962e-da031a6431b5)
 
 ### UCS
 
-![Image](https://github.com/user-attachments/assets/6235d58b-c781-4cb2-bb3e-2679ced55539)
+![Image](https://github.com/user-attachments/assets/6f2e519c-0611-4910-8253-39bf3aafdc22)
 
 ### IDS
 
-![Image](https://github.com/user-attachments/assets/0600feb6-f593-4368-a31f-dda9c5e52903)
+![Image](https://github.com/user-attachments/assets/675b7345-805e-418b-8132-3976cc791f4a)
 
 ### Hình ảnh so sánh hiệu suất của các thuật toán:
 
-![Image](https://github.com/user-attachments/assets/bc1659f0-2a1a-4450-b3a8-93f291b8c392)
+![Image](https://github.com/user-attachments/assets/22b41582-5bf4-4a7f-8d23-22da79380293)
 
 ### Đánh giá các thuật toán:
 
@@ -73,19 +73,19 @@ Ngoài ra, dự án còn hướng đến mục tiêu giảng dạy và nghiên c
 
 ### Greedy Search
 
-![Image](https://github.com/user-attachments/assets/f569d643-bdfe-4195-a0e7-314ff0098dcc)
+![Image](https://github.com/user-attachments/assets/a7a969c8-5ff1-4324-ae23-5947269233a3)
 
 ### A*
 
-![Image](https://github.com/user-attachments/assets/31aa253b-f44a-457c-bd13-70d1067101b9)
+![Image](https://github.com/user-attachments/assets/20a02f52-e525-49bb-b2ca-977a39cc0855)
 
 ### IDA*
 
-![Image](https://github.com/user-attachments/assets/942b03f6-813c-49d3-bfb2-60b8e18bb6fb)
+![Image](https://github.com/user-attachments/assets/e758a2bb-1c7d-4110-aa16-73ffb7bfde13)
 
 ### Hình ảnh so sánh hiệu suất của các thuật toán:
 
-![Image](https://github.com/user-attachments/assets/769bd61c-822e-462f-8a7a-11b098b83f37)
+![Image](https://github.com/user-attachments/assets/58ee42e2-a01c-43e5-a1c6-e92afe4aa397)
 
 ### Đánh giá các thuật toán:
 
@@ -112,31 +112,31 @@ Ngoài ra, dự án còn hướng đến mục tiêu giảng dạy và nghiên c
 
 ### Simple Hill Climbing
 
-![Image](https://github.com/user-attachments/assets/eba10a55-53cf-4c61-ac12-16431ff68661)
+![Image](https://github.com/user-attachments/assets/25971d4b-cdc9-4dc6-b0af-b8d44140ded7)
 
 ### Steepest Hill Climbing
 
-![Image](https://github.com/user-attachments/assets/cc312e81-0c00-4f1b-97a5-0a455300af7e)
+![Image](https://github.com/user-attachments/assets/42a6632d-b363-44b0-9fb2-1904229f91c5)
 
 ### Random Hill Climbing
 
-![Image](https://github.com/user-attachments/assets/643f4a8a-0396-41c2-adf4-cba231e2c6b0)
+![Image](https://github.com/user-attachments/assets/f915b294-ec8f-41d1-8eb9-451aac34005e)
 
 ### Simulated Annealing
 
-![Image](https://github.com/user-attachments/assets/0547bd5e-ffb5-4886-9b60-3196054eb886)
+![Image](https://github.com/user-attachments/assets/d1842974-79db-4b7d-b92e-b85d0be5657a)
 
 ### Beam Search
 
-![Image](https://github.com/user-attachments/assets/0a84e393-63f2-4492-a8f3-5ada0ac964c5)
+![Image](https://github.com/user-attachments/assets/193afead-8519-4251-9330-651c448f5c67)
 
 ### Genetic Algorithm
 
-![Image](https://github.com/user-attachments/assets/24fa36a4-2c87-43ff-8747-12b53eb05dff)
+![Image](https://github.com/user-attachments/assets/04c2d590-0d34-451b-800b-362295959db6)
 
 ### Hình ảnh so sánh hiệu suất của các thuật toán:
 
-![Image](https://github.com/user-attachments/assets/f02041dc-b93f-4b7b-8296-90bf6b065698)
+![Image](https://github.com/user-attachments/assets/f24b76bd-76bd-46fb-9c3f-389028f84627)
 
 ### Đánh giá các thuật toán:
 
@@ -172,19 +172,19 @@ Ngoài ra, dự án còn hướng đến mục tiêu giảng dạy và nghiên c
 
 ### And-Or Search
 
-![Image](https://github.com/user-attachments/assets/4175d832-27ef-42e5-98cb-1fc65bdb6ff1)
+![Image](https://github.com/user-attachments/assets/4b930af2-31ef-4a55-9dac-c12abc75aecc)
 
 ### Belief State Search
 
-![Image](https://github.com/user-attachments/assets/4f383bb3-27ce-4692-928e-d4f94a786681)
+![Image](https://github.com/user-attachments/assets/ea63d09c-2df8-48df-b163-ba880cc5bf4f)
 
 ### Partial Observable Search
 
-![Image](https://github.com/user-attachments/assets/23a165dd-8d53-4ef9-942d-246a0361306f)
+![Image](https://github.com/user-attachments/assets/bcc96c3d-100c-40a5-8b80-ef5f70347282)
 
 ### Hình ảnh so sánh hiệu suất của các thuật toán:
 
-![Image](https://github.com/user-attachments/assets/4eac8d15-f146-4f39-ac78-ce8a916f5866)
+![Image](https://github.com/user-attachments/assets/7a25635a-101b-4eaf-b1f3-814ffd205460)
 
 ### Đánh giá các thuật toán:
 
@@ -220,19 +220,19 @@ Ngoài ra, dự án còn hướng đến mục tiêu giảng dạy và nghiên c
 
 ### Backtracking Search
 
-![Image](https://github.com/user-attachments/assets/bb1873a2-a6be-4588-be7e-f6093efe778f)
+![Image](https://github.com/user-attachments/assets/5f172457-2472-4c44-b885-2a18dae7a9ed)
 
 ### Forward Checking
 
-![Image](https://github.com/user-attachments/assets/43e4f158-a4cd-43cd-8e0c-281c7663134c)
+![Image](https://github.com/user-attachments/assets/a95c79e5-706b-4f34-8ef8-eac9eaccd529)
 
 ### Min-Conflicts Search
 
-![Image](https://github.com/user-attachments/assets/b11f920c-921b-4afb-9615-fbb5fe50d404)
+![Image](https://github.com/user-attachments/assets/317d3da2-4d97-4b9f-a278-4fb78e5aab77)
 
 ### Hình ảnh so sánh hiệu suất của các thuật toán:
 
-![Image](https://github.com/user-attachments/assets/9399c88a-56b3-47bf-b00e-99df78c4dc4d)
+![Image](https://github.com/user-attachments/assets/fd7c8596-bedf-4875-b3f5-0d6a42c1aa87)
 
 ### Đánh giá các thuật toán:
 
@@ -269,11 +269,11 @@ Q-Learning sử dụng bảng Q (Q-table) để lưu giá trị kỳ vọng củ
 
 ### Q-Learning
 
-![Image](https://github.com/user-attachments/assets/59bfa4df-f2be-4f0f-9329-01a8dfc002b2)
+![Image](https://github.com/user-attachments/assets/be64b4c3-a2c4-448d-a1a2-76d628ae2574)
 
 ### Hình ảnh hiệu suất của thuật toán:
 
-![Image](https://github.com/user-attachments/assets/85c5755a-c9fa-461c-a7a2-b5f1304c798a)
+![Image](https://github.com/user-attachments/assets/5aa202e6-fa3b-4e9e-b7ab-4aa4142de9da)
 
 ### Đánh giá thuật toán:
 
@@ -311,5 +311,16 @@ Q-Learning sử dụng bảng Q (Q-table) để lưu giá trị kỳ vọng củ
   - Min-Conflicts: Gán toàn bộ trước rồi sửa lỗi dần, phù hợp cho bài toán ràng buộc lớn
 - Nhóm 6: Q-Learning
   - Q-Learning: Học chính sách tối ưu qua thử-sai, cần thời gian huấn luyện dài, nhưng mạnh mẽ trong môi trường động và không xác định
+# 4.Sinh viên thực hiện: 
+Dự án được thực hiện bởi: Dương Quỳnh Như - 23110281
+# 5. Tài liệu tham khảo: 
+Russell, S. J., & Norvig, P. (2021). Artificial Intelligence: A Modern Approach (4th ed.). Pearson.
 
+Nilsson, N. J. (1980). Principles of Artificial Intelligence. Morgan Kaufmann.
+
+Sutton, R. S., & Barto, A. G. (2018). Reinforcement Learning: An Introduction (2nd ed.). MIT Press.
+
+Koenig, S., & Likhachev, M. (2005). Fast Replanning for Navigation in Unknown Terrain. IEEE Transactions on Robotics, 21(3), 354–363.
+
+Tham khảo, sửa lỗi dựa trên một số AI như: ChatGPT, Grok3.
 
