@@ -1421,13 +1421,14 @@ class EightPuzzle:
 
 # Hàm chọn trạng thái ban đầu bằng Pygame
 def initial_state_selector(goal_state):
+    os.environ['SDL_VIDEO_CENTERED'] = '1'
     pygame.init()
     WIDTH, HEIGHT = 800, 600
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("8-Puzzle Initial State Selector")
 
     try:
-        background = pygame.image.load("Image/background.jpg")
+        background = pygame.image.load("Image/background1.jpg")
         background = pygame.transform.scale(background, (WIDTH, HEIGHT))
     except:
         background = pygame.Surface((WIDTH, HEIGHT))
@@ -1437,6 +1438,8 @@ def initial_state_selector(goal_state):
     label_font = pygame.font.SysFont("Arial", 40, bold=True)
     error_font = pygame.font.SysFont("Arial", 30, bold=True)
     input_font = pygame.font.SysFont("Arial", 25, bold=True)
+    instruction_font = pygame.font.SysFont("Arial", 16, bold=True)
+
 
     initial_state = [[1, 2, 3], [4, 0, 6], [7, 5, 8]]
     tile_size = 80
@@ -1457,9 +1460,9 @@ def initial_state_selector(goal_state):
             for j in range(3):
                 rect = pygame.Rect(offset_x + j * tile_size, offset_y + i * tile_size, tile_size, tile_size)
                 if selected == (i, j):
-                    pygame.draw.rect(screen, (255, 215, 0), rect, border_radius=10)
+                    pygame.draw.rect(screen, (199, 21, 133), rect, border_radius=10)
                 else:
-                    pygame.draw.rect(screen, (135, 206, 235), rect, border_radius=10)
+                    pygame.draw.rect(screen, (255, 182, 193), rect, border_radius=10)
                 pygame.draw.rect(screen, (0, 0, 0), rect, 3, border_radius=10)
                 if state[i][j] != 0:
                     text = label_font.render(str(state[i][j]), True, (255, 69, 0))
@@ -1508,13 +1511,13 @@ def initial_state_selector(goal_state):
                                 (goal_offset_x + 120, goal_offset_y - 40))
         draw_grid(goal_state, goal_offset_x, goal_offset_y, tile_size)
 
-        pygame.draw.rect(screen, (50, 205, 50), button_random_rect, border_radius=10)
+        pygame.draw.rect(screen, (199, 21, 133), button_random_rect, border_radius=10)
         render_text_with_border(screen, "Random", label_font, (255, 255, 255), (0, 0, 0), button_random_rect.center)
 
-        pygame.draw.rect(screen, (50, 205, 50), button_manual_rect, border_radius=10)
+        pygame.draw.rect(screen, (199, 21, 133), button_manual_rect, border_radius=10)
         render_text_with_border(screen, "Manual", label_font, (255, 255, 255), (0, 0, 0), button_manual_rect.center)
 
-        pygame.draw.rect(screen, (50, 205, 50), button_confirm_rect, border_radius=10)
+        pygame.draw.rect(screen, (199, 21, 133), button_confirm_rect, border_radius=10)
         render_text_with_border(screen, "Confirm", label_font, (255, 255, 255), (0, 0, 0), button_confirm_rect.center)
 
         if input_active:
@@ -1523,8 +1526,8 @@ def initial_state_selector(goal_state):
             pygame.draw.rect(screen, (0, 0, 0), input_box, 2, border_radius=10)
             text_surface = input_font.render(input_text, True, (0, 0, 0))
             screen.blit(text_surface, (input_box.x + 5, input_box.y + 5))
-            render_text_with_border(screen, "Enter 9 numbers (0-8) separated by spaces", input_font, (255, 0, 0), (0, 0, 0),
-                                    (WIDTH // 2, 595))
+            render_text_with_border(screen, "Enter 9 numbers (0-8) separated by spaces", instruction_font, (255, 0, 0), (0, 0, 0),
+                                    (WIDTH // 2, 590))
 
         pygame.display.flip()
 
@@ -1628,7 +1631,7 @@ def draw_performance(screen, performance_history, WIDTH, HEIGHT):
     max_runtime = max(avg_runtimes)
 
     show_info_rect = pygame.Rect(WIDTH - 160, 20, 140, 40)
-    pygame.draw.rect(screen, (50, 205, 50), show_info_rect, border_radius=10)
+    pygame.draw.rect(screen, (199, 21, 133), show_info_rect, border_radius=10)
     pygame.draw.rect(screen, (0, 0, 0), show_info_rect, 2, border_radius=10)
     screen.blit(label_font.render("Show Info", True, (255, 255, 255)), show_info_rect.move(20, 5))
 
@@ -1643,7 +1646,7 @@ def draw_performance(screen, performance_history, WIDTH, HEIGHT):
             screen.blit(label_font.render(algo, True, (0, 0, 0)), (bar_rect.centerx - 20, y_offset + chart_height + 10))
         screen.blit(label_font.render(ylabel, True, (0, 0, 0)), (10, y_offset + chart_height // 2 - 10))
 
-    draw_chart("States Explored", 80, avg_states_explored, max_states, (135, 206, 235), "States")
+    draw_chart("States Explored", 80, avg_states_explored, max_states, (255, 182, 193), "States")
     draw_chart("Runtime (ms)", HEIGHT // 2 + 20, avg_runtimes, max_runtime, (255, 99, 71), "Milliseconds")
     pygame.display.flip()
 
@@ -1730,7 +1733,7 @@ def main_game(initial_state, goal_state):
     pygame.display.set_caption("8-Puzzle Solver")
 
     try:
-        background = pygame.image.load("Image/background.jpg")
+        background = pygame.image.load("Image/background1.jpg")
         background = pygame.transform.scale(background, (WIDTH, HEIGHT))
     except:
         background = pygame.Surface((WIDTH, HEIGHT))
@@ -1805,11 +1808,11 @@ def main_game(initial_state, goal_state):
                 if state[i][j] == 0:
                     pygame.draw.rect(screen, (255, 255, 255), rect, border_radius=8)
                 else:
-                    pygame.draw.rect(screen, (173, 216, 230), rect, border_radius=8)
+                    pygame.draw.rect(screen, (255, 182, 193), rect, border_radius=8)
                 pygame.draw.rect(screen, (0, 0, 0), rect, 2, border_radius=8)
                 if state[i][j] != 0:
                     num_font = number_font if tile_size > 50 else pygame.font.SysFont("Arial", 30, bold=True)
-                    text = num_font.render(str(state[i][j]), True, (255, 140, 0))
+                    text = num_font.render(str(state[i][j]), True, (255, 69, 0))
                     text_rect = text.get_rect(center=rect.center)
                     screen.blit(text, text_rect)
 
@@ -1866,28 +1869,28 @@ def main_game(initial_state, goal_state):
                                     (algo_grid_x + 180, algo_grid_y + 500))
 
         for label, rect in buttons:
-            button_color = (255, 165, 0) if selected_button == label else (255, 215, 0)
+            button_color = (255, 105, 180) if selected_button == label else (199, 21, 133)
             pygame.draw.rect(screen, button_color, rect, border_radius=10)
             pygame.draw.rect(screen, (0, 0, 0), rect, 2, border_radius=10)
             render_text_with_border(screen, label, button_font, (255, 255, 255), (0, 0, 0), rect.center)
 
-        pygame.draw.rect(screen, (255, 215, 0), view_button_rect, border_radius=10)
+        pygame.draw.rect(screen, (199, 21, 133), view_button_rect, border_radius=10)
         pygame.draw.rect(screen, (0, 0, 0), view_button_rect, 2, border_radius=10)
         render_text_with_border(screen, "View Stats", button_font, (255, 255, 255), (0, 0, 0), view_button_rect.center)
 
-        pygame.draw.rect(screen, (255, 215, 0), reset_button_rect, border_radius=10)
+        pygame.draw.rect(screen, (199, 21, 133), reset_button_rect, border_radius=10)
         pygame.draw.rect(screen, (0, 0, 0), reset_button_rect, 2, border_radius=10)
         render_text_with_border(screen, "Reset", button_font, (255, 255, 255), (0, 0, 0), reset_button_rect.center)
 
-        pygame.draw.rect(screen, (255, 215, 0), back_button_rect, border_radius=10)
+        pygame.draw.rect(screen, (199, 21, 133), back_button_rect, border_radius=10)
         pygame.draw.rect(screen, (0, 0, 0), back_button_rect, 2, border_radius=10)
         render_text_with_border(screen, "Back", button_font, (255, 255, 255), (0, 0, 0), back_button_rect.center)
 
-        pygame.draw.rect(screen, (255, 215, 0), show_info_button_rect, border_radius=10)
+        pygame.draw.rect(screen, (199, 21, 133), show_info_button_rect, border_radius=10)
         pygame.draw.rect(screen, (0, 0, 0), show_info_button_rect, 2, border_radius=10)
         render_text_with_border(screen, "Show Info", button_font, (255, 255, 255), (0, 0, 0), show_info_button_rect.center)
         
-        pygame.draw.rect(screen, (255, 215, 0), reset_chart_button_rect, border_radius=10)
+        pygame.draw.rect(screen, (199, 21, 133), reset_chart_button_rect, border_radius=10)
         pygame.draw.rect(screen, (0, 0, 0), reset_chart_button_rect, 2, border_radius=10)
         render_text_with_border(screen, "Reset Chart", button_font, (255, 255, 255), (0, 0, 0), reset_chart_button_rect.center)
 
@@ -2034,7 +2037,7 @@ def main_game(initial_state, goal_state):
 def show_belief_screen(puzzle, screen, WIDTH, HEIGHT):
     pygame.display.set_caption("Belief State Search")
     try:
-        background = pygame.image.load("Image/background.jpg")
+        background = pygame.image.load("Image/background2.jpg")
         background = pygame.transform.scale(background, (WIDTH, HEIGHT))
     except:
         background = pygame.Surface((WIDTH, HEIGHT))
@@ -2064,10 +2067,10 @@ def show_belief_screen(puzzle, screen, WIDTH, HEIGHT):
         for i in range(3):
             for j in range(3):
                 rect = pygame.Rect(x + j * tile_size, y + i * tile_size, tile_size, tile_size)
-                pygame.draw.rect(grid_surface, (173, 216, 230), rect, border_radius=10)
+                pygame.draw.rect(grid_surface, (255, 182, 193), rect, border_radius=10)
                 pygame.draw.rect(grid_surface, (0, 0, 0), rect, 2)
                 if state[i][j] != 0:
-                    text = number_font.render(str(state[i][j]), True, (255, 140, 0))
+                    text = number_font.render(str(state[i][j]), True, (235, 69, 0))
                     grid_surface.blit(text, text.get_rect(center=rect.center))
 
     clock = pygame.time.Clock()
@@ -2091,11 +2094,11 @@ def show_belief_screen(puzzle, screen, WIDTH, HEIGHT):
         title = title_font.render("Belief State Search", True, (0, 0, 0))
         screen.blit(title, (WIDTH // 2 - title.get_width() // 2, 30))
 
-        pygame.draw.rect(screen, (255, 215, 0), run_button, border_radius=8)
+        pygame.draw.rect(screen, (199, 21, 133), run_button, border_radius=8)
         pygame.draw.rect(screen, (0, 0, 0), run_button, 2)
         screen.blit(label_font.render("Run", True, (0, 0, 0)), run_button.move(35, 5))
 
-        pygame.draw.rect(screen, (255, 215, 0), back_button, border_radius=8)
+        pygame.draw.rect(screen, (199, 21, 133), back_button, border_radius=8)
         pygame.draw.rect(screen, (0, 0, 0), back_button, 2)
         screen.blit(label_font.render("Back", True, (0, 0, 0)), back_button.move(30, 5))
 
@@ -2132,7 +2135,7 @@ def show_pos_screen(puzzle, screen, WIDTH, HEIGHT):
     pygame.display.set_caption("Partial Observable Search")
 
     try:
-        background = pygame.image.load("Image/background.jpg")
+        background = pygame.image.load("Image/background2.jpg")
         background = pygame.transform.scale(background, (WIDTH, HEIGHT))
     except:
         background = pygame.Surface((WIDTH, HEIGHT))
@@ -2162,10 +2165,10 @@ def show_pos_screen(puzzle, screen, WIDTH, HEIGHT):
         for i in range(3):
             for j in range(3):
                 rect = pygame.Rect(x + j * tile_size, y + i * tile_size, tile_size, tile_size)
-                pygame.draw.rect(grid_surface, (144, 238, 144), rect, border_radius=10)
+                pygame.draw.rect(grid_surface, (255, 182, 193), rect, border_radius=10)
                 pygame.draw.rect(grid_surface, (0, 0, 0), rect, 2)
                 if state[i][j] != 0:
-                    text = number_font.render(str(state[i][j]), True, (0, 100, 0))
+                    text = number_font.render(str(state[i][j]), True, (235,69,0))
                     grid_surface.blit(text, text.get_rect(center=rect.center))
 
     clock = pygame.time.Clock()
@@ -2188,11 +2191,11 @@ def show_pos_screen(puzzle, screen, WIDTH, HEIGHT):
         title = title_font.render("Partial Observable Search", True, (0, 0, 0))
         screen.blit(title, (WIDTH // 2 - title.get_width() // 2, 30))
 
-        pygame.draw.rect(screen, (255, 215, 0), run_button, border_radius=8)
+        pygame.draw.rect(screen, (199, 21, 133), run_button, border_radius=8)
         pygame.draw.rect(screen, (0, 0, 0), run_button, 2)
         screen.blit(label_font.render("Run", True, (0, 0, 0)), run_button.move(35, 5))
 
-        pygame.draw.rect(screen, (255, 215, 0), back_button, border_radius=8)
+        pygame.draw.rect(screen, (199, 21, 133), back_button, border_radius=8)
         pygame.draw.rect(screen, (0, 0, 0), back_button, 2)
         screen.blit(label_font.render("Back", True, (0, 0, 0)), back_button.move(30, 5))
 
