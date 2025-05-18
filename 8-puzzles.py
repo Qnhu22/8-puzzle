@@ -98,7 +98,7 @@ class EightPuzzle:
     def list_to_state(self, lst):
         return tuple(tuple(lst[i * 3:(i + 1) * 3]) for i in range(3))
 
-    def generate_random_state(self):
+    def create_random_board(self):
         numbers = list(range(9))
         random.shuffle(numbers)
         state = self.list_to_state(numbers)
@@ -148,7 +148,7 @@ class EightPuzzle:
         return path
 
     def genetic_algorithm(self, population_size=50, max_generations=500):
-        population = [self.generate_random_state() for _ in range(population_size)]
+        population = [self.create_random_board() for _ in range(population_size)]
         explored_states = []
         best_fitness = float('-inf')
         no_improvement_count = 0
@@ -508,10 +508,7 @@ class EightPuzzle:
 
         return None, explored_states
 
-    def generate_random_state(self, max_depth=5):
-        """
-        Tạo trạng thái ngẫu nhiên gần initial_state trong max_depth bước.
-        """
+    def create_random_board(self, max_depth=5):
         current_state = self.initial
         for _ in range(random.randint(1, max_depth)):
             neighbors = self.get_neighbors(current_state)
@@ -519,10 +516,6 @@ class EightPuzzle:
         return current_state
 
     def bfs_for_belief(self, start_state, max_depth=10):
-        """
-        Chạy BFS từ trạng thái start_state để tìm các trạng thái lân cận trong max_depth bước.
-        Trả về: Tập hợp các trạng thái lân cận (giới hạn tối đa 5 trạng thái).
-        """
         queue = deque([(start_state, 0)])
         visited = {start_state}
         states = set()
@@ -537,14 +530,13 @@ class EightPuzzle:
                         states.add(neighbor)
         return states
 
-    def belief_state_search(self, initial_belief, max_steps=5000):
+    def search_belief_space(self, initial_belief, max_steps=5000):
         initial_belief = set(initial_belief)
         explored = set()
         num_explored_states = 0
         belief_states_path = [list(initial_belief)]
         total_steps = 0
 
-        # Khởi tạo explored states
         for state in initial_belief:
             explored.add(state)
             num_explored_states += 1
@@ -556,7 +548,6 @@ class EightPuzzle:
             belief_state, path = belief_queue.popleft()
             belief_state_tuple = frozenset(belief_state)
 
-            # Kiểm tra mục tiêu: Tất cả trạng thái trong belief state phải là goal
             if all(state == self.goal for state in belief_state):
                 total_steps = 0
                 for initial_state in initial_belief:
@@ -573,17 +564,13 @@ class EightPuzzle:
                 continue
             visited.add(belief_state_tuple)
 
-            # Duyệt qua các hành động (lên, xuống, trái, phải)
             for action in range(4):
                 new_belief = set()
                 for state in belief_state:
                     neighbors = self.get_neighbors(state)
                     if action < len(neighbors):
-                        # Thêm trạng thái xác định
                         next_state = neighbors[action]
                         new_belief.add(next_state)
-
-                        # Tạo trạng thái không xác định (chỉ với xác suất 10%)
                         if random.random() < 0.1:
                             i, j = None, None
                             for r in range(3):
@@ -603,12 +590,10 @@ class EightPuzzle:
                                 uncertain_state = tuple(tuple(row) for row in state_list)
                                 new_belief.add(uncertain_state)
                     else:
-                        # Nếu hành động không hợp lệ, giữ nguyên trạng thái
                         new_belief.add(state)
 
-                # Thu hẹp belief state: Chỉ giữ 3 trạng thái gần mục tiêu nhất
                 if new_belief:
-                    new_belief = set(sorted(new_belief, key=self.heuristic)[:3])  # Giữ 3 trạng thái tốt nhất
+                    new_belief = set(sorted(new_belief, key=self.heuristic)[:3])
 
                     for state in new_belief:
                         if state not in explored:
@@ -619,7 +604,7 @@ class EightPuzzle:
 
         return None, explored, 0
 
-    def optimized_bfs_for_belief(self, start_state, max_depth=1):
+    def optimized_belief_state_search(self, start_state, max_depth=1):
         queue = deque([(start_state, 0)])
         visited = {start_state}
         states = [(self.heuristic(start_state), start_state)]
@@ -638,31 +623,21 @@ class EightPuzzle:
 
 
 
-    def get_observation(self, state):
-        """
-        Giả lập quan sát một phần: chỉ quan sát được vị trí của ô số 1.
-        Trả về vị trí (row, col) của ô số 1 trong trạng thái.
-        """
+    def observe_tile_one(self, state):
         for i in range(3):
             for j in range(3):
                 if state[i][j] == 1:
                     return (i, j)
         return None
 
-    def find_states_with_one_at_00(self, start_state, max_states=3):  # Giảm từ 6 xuống 3
-        """
-        Tìm các trạng thái có số 1 ở vị trí (0,0) bằng BFS.
-        start_state: Trạng thái ban đầu.
-        max_states: Số trạng thái tối đa cần tìm là 3.
-        Trả về: Danh sách các trạng thái (dạng tuple) có số 1 ở (0,0).
-        """
+    def get_states_one_at_origin(self, start_state, max_states=3):
         queue = deque([(start_state, [])])
         visited = {start_state}
         states_with_one_at_00 = []
 
         while queue and len(states_with_one_at_00) < max_states:
             state, path = queue.popleft()
-            if self.get_observation(state) == (0, 0):
+            if self.observe_tile_one(state) == (0, 0):
                 states_with_one_at_00.append(state)
                 if len(states_with_one_at_00) >= max_states:
                     break
@@ -686,13 +661,8 @@ class EightPuzzle:
         return states_with_one_at_00[:max_states]
 
     def partial_observable_search(self):
-        """
-        Partial Observable Search: Tìm kiếm trên không gian belief states với số 1 ở (0,0).
-        Trả về: (belief_states_path, explored_states, total_steps) hoặc (None, explored_states, 0).
-        """
-        # Khởi tạo initial_belief với 3 trạng thái có số 1 ở (0,0)
-        initial_belief = self.find_states_with_one_at_00(self.initial, max_states=3)
-        queue = deque([(set(initial_belief), [], 0)])  # (belief_state, path, steps)
+        initial_belief = self.get_states_one_at_origin(self.initial, max_states=3)
+        queue = deque([(set(initial_belief), [], 0)]) 
         visited = set()
         explored_states = []
         belief_states_path = [list(initial_belief)]
@@ -703,30 +673,24 @@ class EightPuzzle:
             belief_state_tuple = frozenset(belief_state)
             explored_states.extend(belief_state)
 
-            # Kiểm tra điều kiện mục tiêu: Tất cả trạng thái trong belief state phải là goal
             if all(state == self.goal for state in belief_state):
-                total_steps = steps  # Số bước là số hành động (steps)
-                belief_states_path.append([self.goal] * 3)  # Chỉ 3 trạng thái
+                total_steps = steps 
+                belief_states_path.append([self.goal] * 3)
                 return belief_states_path, explored_states, total_steps
 
             if belief_state_tuple in visited:
                 continue
             visited.add(belief_state_tuple)
-
-            # Duyệt qua các hành động (lên, xuống, trái, phải)
             for action in range(4):
                 new_belief = set()
                 for state in belief_state:
                     neighbors = self.get_neighbors(state)
                     if action < len(neighbors):
-                        # Thêm trạng thái xác định
                         next_state = neighbors[action]
-                        # Chỉ giữ trạng thái có số 1 ở (0,0)
-                        if self.get_observation(next_state) == (0, 0):
+                        if self.observe_tile_one(next_state) == (0, 0):
                             new_belief.add(next_state)
 
-                        # Tạo trạng thái không xác định (chỉ với xác suất 10%)
-                        if random.random() < 0.1:  # Giảm từ 50% xuống 10%
+                        if random.random() < 0.1:
                             i, j = self.find_blank(next_state)
                             directions = [(0, -1), (0, 1), (1, 0), (-1, 0)]
                             valid_directions = [(di, dj) for di, dj in directions if
@@ -737,26 +701,16 @@ class EightPuzzle:
                                 state_list = [list(row) for row in next_state]
                                 state_list[i][j], state_list[ni][nj] = state_list[ni][nj], state_list[i][j]
                                 uncertain_state = tuple(tuple(row) for row in state_list)
-                                # Chỉ giữ trạng thái không xác định có số 1 ở (0,0)
-                                if self.get_observation(uncertain_state) == (0, 0):
+                                if self.observe_tile_one(uncertain_state) == (0, 0):
                                     new_belief.add(uncertain_state)
-
-                # Thu hẹp belief state: Giữ tối đa 3 trạng thái tốt nhất theo heuristic
                 if new_belief:
-                    new_belief = set(sorted(new_belief, key=self.heuristic)[:3])  # Giảm từ 5 xuống 3
+                    new_belief = set(sorted(new_belief, key=self.heuristic)[:3])
                     queue.append((new_belief, path + [min(belief_state, key=self.heuristic)], steps + 1))
                     belief_states_path.append(list(new_belief))
 
         return None, explored_states, 0
 
-    def is_valid_assignment(self, state, pos, value):
-        """
-        Kiểm tra xem việc gán giá trị cho ô pos có thỏa mãn các ràng buộc không.
-        state: Ma trận hiện tại (có thể chứa None).
-        pos: Vị trí ô (i,j).
-        value: Giá trị cần gán (0-8).
-        Trả về: True nếu hợp lệ, False nếu không.
-        """
+    def check_valid_assignment(self, state, pos, value):
         i, j = pos
         # Ràng buộc: Ô (0,0) phải là 1
         if i == 0 and j == 0 and value != 1:
@@ -783,10 +737,6 @@ class EightPuzzle:
         return True
 
     def is_solvable(self, state):
-        """
-        Kiểm tra xem ma trận có solvable không (số nghịch đảo chẵn).
-        state: Ma trận 3x3 (có thể chứa None).
-        """
         flat = [state[i][j] for i in range(3) for j in range(3) if state[i][j] is not None and state[i][j] != 0]
         inversions = 0
         for i in range(len(flat)):
@@ -926,11 +876,11 @@ class EightPuzzle:
         return inversions % 2 == 0
 
     def backtracking_search(self, depth_limit=9):
-        visited = set()  # Store visited states to avoid cycles
-        explored_states = []  # Store all explored states
-        path = []  # Store the path from empty to goal
+        visited = set()
+        explored_states = []
+        path = []
 
-        def is_valid_assignment(state, pos, value):
+        def check_valid_assignment(state, pos, value):
             i, j = pos
             # Ràng buộc: Ô (0,0) phải là 1
             if i == 0 and j == 0 and value != 1:
@@ -967,61 +917,48 @@ class EightPuzzle:
             return inversions % 2 == 0
 
         def backtrack(state, assigned, pos_index):
-            # Base case: All cells assigned
             if pos_index == 9:
                 state_tuple = tuple(tuple(row) for row in state)
                 if state_tuple == self.goal and is_solvable(state):
                     path.append(state_tuple)
                     return path
                 return None
-
-            # Get the next cell position
             i, j = divmod(pos_index, 3)
             if i >= 3 or j >= 3:
                 return None
 
-            # Create a state tuple for checking visited states
             state_tuple = tuple(tuple(row if row is not None else (None, None, None)) for row in state)
             if state_tuple in visited:
                 return None
             visited.add(state_tuple)
             explored_states.append(state_tuple)
 
-            # Try assigning each possible value
             for value in range(9):
-                if value not in assigned and is_valid_assignment(state, (i, j), value):
-                    # Assign the value
+                if value not in assigned and check_valid_assignment(state, (i, j), value):
                     new_state = [row[:] for row in state]
                     new_state[i][j] = value
                     new_assigned = assigned | {value}
-
-                    # Add current state to path before recursion
                     path.append(state_tuple)
 
-                    # Recurse to the next cell
                     result = backtrack(new_state, new_assigned, pos_index + 1)
                     if result is not None:
                         return result
-
-                    # Backtrack: Remove the state from path
                     path.pop()
 
             return None
-
-        # Initialize empty matrix and start backtracking
         empty_state = [[None for _ in range(3)] for _ in range(3)]
         result = backtrack(empty_state, set(), 0)
         return result, explored_states
 
     def forward_checking_search(self, depth_limit=9):
-        visited = set()  # Lưu các trạng thái đã thăm
-        explored_states = []  # Lưu các trạng thái đã khám phá
-        path = []  # Lưu đường đi từ rỗng đến mục tiêu
+        visited = set()
+        explored_states = []
+        path = []
 
         def get_domain(state, pos, assigned):
             domain = []
             for value in range(9):
-                if value not in assigned and self.is_valid_assignment(state, pos, value):
+                if value not in assigned and self.check_valid_assignment(state, pos, value):
                     domain.append(value)
             return domain
 
@@ -1158,58 +1095,29 @@ class EightPuzzle:
         return result, explored_states
 
     def min_conflicts_search(self, max_iterations=1000, max_no_improvement=100, timeout=5.0):
-        """
-        Min-Conflicts Search for CSP following the theoretical approach.
-        Starts with unassigned variables, assigns initial values, and iteratively
-        selects a conflicting variable to reassign with a value that minimizes conflicts.
-
-        Args:
-            max_iterations (int): Maximum number of iterations.
-            max_no_improvement (int): Maximum iterations without improvement before restart.
-            timeout (float): Maximum running time in seconds.
-
-        Returns:
-            tuple: (path, num_explored_states) if solution found,
-                   (None, num_explored_states) otherwise.
-        """
-
         def count_conflicts(state):
-            """
-            Count the number of constraint violations in the state.
-
-            Returns:
-                int: Number of conflicts.
-            """
             conflicts = 0
             value_counts = defaultdict(int)
-
-            # Constraint: (0,0) must be 1
             if state[0][0] != 1:
                 conflicts += 1
 
-            # Constraint: Each number appears exactly once
             for i in range(3):
                 for j in range(3):
                     val = state[i][j]
                     value_counts[val] += 1
                     if value_counts[val] > 1:
                         conflicts += value_counts[val] - 1
-
-            # Row constraint: state[i][j+1] = state[i][j] + 1 (except blank)
             for i in range(3):
                 for j in range(2):
                     if state[i][j] != 0 and state[i][j + 1] != 0:
                         if state[i][j + 1] != state[i][j] + 1:
                             conflicts += 1
 
-            # Column constraint: state[i+1][j] = state[i][j] + 3 (except blank)
             for j in range(3):
                 for i in range(2):
                     if state[i][j] != 0 and state[i + 1][j] != 0:
                         if state[i + 1][j] != state[i][j] + 3:
                             conflicts += 1
-
-            # Solvability constraint (only check if state is complete)
             if all(state[i][j] is not None for i in range(3) for j in range(3)):
                 if not self.is_solvable(state):
                     conflicts += 1
@@ -1217,29 +1125,17 @@ class EightPuzzle:
             return conflicts
 
         def get_conflicting_positions(state):
-            """
-            Identify positions that cause conflicts.
-
-            Returns:
-                list: List of (i, j) positions with conflicts.
-            """
             conflicts = []
             value_counts = defaultdict(int)
             conflict_positions = set()
-
-            # Check (0,0) must be 1
             if state[0][0] != 1:
                 conflict_positions.add((0, 0))
-
-            # Check unique values
             for i in range(3):
                 for j in range(3):
                     val = state[i][j]
                     value_counts[val] += 1
                     if value_counts[val] > 1:
                         conflict_positions.add((i, j))
-
-            # Check row constraints
             for i in range(3):
                 for j in range(2):
                     if state[i][j] != 0 and state[i][j + 1] != 0:
@@ -1247,7 +1143,6 @@ class EightPuzzle:
                             conflict_positions.add((i, j))
                             conflict_positions.add((i, j + 1))
 
-            # Check column constraints
             for j in range(3):
                 for i in range(2):
                     if state[i][j] != 0 and state[i + 1][j] != 0:
@@ -1255,7 +1150,6 @@ class EightPuzzle:
                             conflict_positions.add((i, j))
                             conflict_positions.add((i + 1, j))
 
-            # Check solvability
             if all(state[i][j] is not None for i in range(3) for j in range(3)):
                 if not self.is_solvable(state):
                     for i in range(3):
@@ -1265,23 +1159,9 @@ class EightPuzzle:
             return list(conflict_positions)
 
         def select_min_conflict_value(state, i, j, current_value, assigned_values):
-            """
-            Select a value for position (i, j) that minimizes conflicts, possibly by swapping.
-
-            Args:
-                state: Current state of the puzzle.
-                i, j: Position to assign a value.
-                current_value: Current value at (i, j).
-                assigned_values: Set of values already used.
-
-            Returns:
-                tuple: (new_value, swap_pos) where new_value is the value to assign,
-                       and swap_pos is the position to swap with (or None if no swap).
-            """
             value_scores = []
             state_copy = [row[:] for row in state]
 
-            # Try swapping with other positions
             for r in range(3):
                 for c in range(3):
                     if (r, c) != (i, j):
@@ -1289,8 +1169,6 @@ class EightPuzzle:
                         state_copy[i][j], state_copy[r][c] = state_copy[r][c], state_copy[i][j]
                         conflicts = count_conflicts(state_copy)
                         value_scores.append((conflicts, state[r][c], (r, c)))
-
-            # Try assigning new values not in assigned_values
             for value in range(9):
                 if value not in assigned_values - ({current_value} if current_value is not None else set()):
                     if (i, j) == (0, 0) and value != 1:
@@ -1307,12 +1185,6 @@ class EightPuzzle:
             return value_scores[0][1], value_scores[0][2]
 
         def initialize_state():
-            """
-            Generate a random initial assignment for all variables.
-
-            Returns:
-                list: A 3x3 matrix with a valid initial assignment.
-            """
             state = [[None for _ in range(3)] for _ in range(3)]
             numbers = list(range(9))
             random.shuffle(numbers)
@@ -1420,7 +1292,7 @@ class EightPuzzle:
         return None, num_explored_states
 
 # Hàm chọn trạng thái ban đầu bằng Pygame
-def initial_state_selector(goal_state):
+def select_starting_board(goal_state):
     os.environ['SDL_VIDEO_CENTERED'] = '1'
     pygame.init()
     WIDTH, HEIGHT = 800, 600
@@ -1455,7 +1327,7 @@ def initial_state_selector(goal_state):
     button_manual_rect = pygame.Rect(320, 500, 150, 50)
     button_confirm_rect = pygame.Rect(500, 500, 150, 50)
 
-    def draw_grid(state, offset_x, offset_y, tile_size, selected=None):
+    def render_puzzle_grid(state, offset_x, offset_y, tile_size, selected=None):
         for i in range(3):
             for j in range(3):
                 rect = pygame.Rect(offset_x + j * tile_size, offset_y + i * tile_size, tile_size, tile_size)
@@ -1505,11 +1377,11 @@ def initial_state_selector(goal_state):
 
         render_text_with_border(screen, "Start", label_font, (255, 255, 255), (0, 0, 0),
                                 (grid_offset_x + 120, grid_offset_y - 40))
-        draw_grid(initial_state, grid_offset_x, grid_offset_y, tile_size, selected_cell)
+        render_puzzle_grid(initial_state, grid_offset_x, grid_offset_y, tile_size, selected_cell)
 
         render_text_with_border(screen, "Goal", label_font, (255, 255, 255), (0, 0, 0),
                                 (goal_offset_x + 120, goal_offset_y - 40))
-        draw_grid(goal_state, goal_offset_x, goal_offset_y, tile_size)
+        render_puzzle_grid(goal_state, goal_offset_x, goal_offset_y, tile_size)
 
         pygame.draw.rect(screen, (199, 21, 133), button_random_rect, border_radius=10)
         render_text_with_border(screen, "Random", label_font, (255, 255, 255), (0, 0, 0), button_random_rect.center)
@@ -1546,7 +1418,7 @@ def initial_state_selector(goal_state):
                             selected_cell = (i, j)
                             break
                 if button_random_rect.collidepoint(mouse_pos):
-                    initial_state = list(map(list, puzzle_temp.generate_random_state()))
+                    initial_state = list(map(list, puzzle_temp.create_random_board()))
                     selected_cell = None
                     input_active = False
                     input_text = ""
@@ -1703,7 +1575,7 @@ def draw_tooltip_multiline(surface, text, font, box_rect, text_color=(255, 255, 
         y += rendered.get_height() + 2
 
 
-def main_game(initial_state, goal_state):
+def run_puzzle_solver(initial_state, goal_state):
     tooltip_font = pygame.font.SysFont("Arial", 18, bold=False)
     tooltip_texts = {
     "BFS": "BFS: Duyệt theo chiều rộng, tìm đường đi ngắn nhất.",
@@ -2054,7 +1926,7 @@ def show_belief_screen(puzzle, screen, WIDTH, HEIGHT):
     run_button = pygame.Rect(WIDTH - 290, HEIGHT - 60, 120, 40)
     grid_surface = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
 
-    initial_belief = puzzle.find_states_with_one_at_00(puzzle.initial, max_states=3)
+    initial_belief = puzzle.get_states_one_at_origin(puzzle.initial, max_states=3)
     path = None
     explored = set()
     total_steps = 0
@@ -2125,7 +1997,7 @@ def show_belief_screen(puzzle, screen, WIDTH, HEIGHT):
                         return None
                 elif run_button.collidepoint(event.pos):
                     start_time = timeit.default_timer()
-                    path, explored, total_steps = puzzle.belief_state_search(initial_belief)
+                    path, explored, total_steps = puzzle.search_belief_space(initial_belief)
                     elapsed_time = (timeit.default_timer() - start_time) * 1000
                     frame = 0
 
@@ -2152,7 +2024,7 @@ def show_pos_screen(puzzle, screen, WIDTH, HEIGHT):
     run_button = pygame.Rect(WIDTH - 290, HEIGHT - 60, 120, 40)
     grid_surface = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
 
-    initial_belief = puzzle.find_states_with_one_at_00(puzzle.initial, max_states=3)
+    initial_belief = puzzle.get_states_one_at_origin(puzzle.initial, max_states=3)
     path = None
     explored = set()
     total_steps = 0
@@ -2247,17 +2119,16 @@ def render_text_with_border(surface, text, font, color, border_color, pos):
 if __name__ == "__main__":
     pygame.init()  # Khởi tạo Pygame một lần duy nhất
     goal_state = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
-    initial_state = initial_state_selector(goal_state)
+    initial_state = select_starting_board(goal_state)
 
-    # Kiểm tra nếu người dùng thoát trong initial_state_selector
     if initial_state is None:
         pygame.quit()
         sys.exit()
 
     while True:
-        result = main_game(initial_state, goal_state)
+        result = run_puzzle_solver(initial_state, goal_state)
         if result == "BACK":
-            initial_state = initial_state_selector(goal_state)
+            initial_state = select_starting_board(goal_state)
             if initial_state is None:  # Kiểm tra nếu người dùng thoát
                 break
         else:
